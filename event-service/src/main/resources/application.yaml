@@ -1,0 +1,38 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: event-service
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST}
+      port: 6379
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-master.xml
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none   # IMPORTANT (Liquibase manages schema)
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+logging:
+  level:
+    liquibase: DEBUG
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
