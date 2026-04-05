@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <include file="db/changelog/changes/001-create-users-table.sql"/>
+    <include file="db/changelog/changes/002-create-user-roles-table.sql"/>
+    <include file="db/changelog/changes/003-create-sessions-table.sql"/>
+    <include file="db/changelog/changes/004-create-password-reset-tokens-table.sql"/>
+    <include file="db/changelog/changes/005-create-email-verification-tokens-table.sql"/>
+    <include file="db/changelog/changes/006-create-outbox-events-table.sql"/>
+</databaseChangeLog>
