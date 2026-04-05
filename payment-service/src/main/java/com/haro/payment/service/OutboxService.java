@@ -1,0 +1,42 @@
+package com.haro.payment.service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.haro.payment.entity.OutboxEvent;
+import com.haro.payment.repository.OutboxEventRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class OutboxService {
+
+    private final OutboxEventRepository outboxEventRepository;
+    private final ObjectMapper objectMapper;
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void saveEvent(String topic, String aggregateType, UUID aggregateId,
+                          String eventType, Object payload) {
+        String json;
+        try {
+            json = objectMapper.writeValueAsString(payload);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to serialize outbox event", e);
+        }
+
+        OutboxEvent event = OutboxEvent.builder()
+                .aggregateType(aggregateType)
+                .aggregateId(aggregateId)
+                .eventType(eventType)
+                .topic(topic)
+                .payload(json)
+                .build();
+
+        outboxEventRepository.save(event);
+    }
+}

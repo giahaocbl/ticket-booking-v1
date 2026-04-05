@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: notification-service
+
+  profiles:
+    active: prod
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+
+  thymeleaf:
+    check-template-location: true
+
+server:
+  port: 8085
+
+aws:
+  ses:
+    region: ap-southeast-2
+    from-address: giahaocbl@gmail.com
+
+app:
+  verification-base-url: http://localhost:8082/verify-email
+  password-reset-base-url: http://localhost:8082/reset-password
+
+logging:
+  level:
+    com.haro: DEBUG
