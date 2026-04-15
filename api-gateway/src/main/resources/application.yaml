@@ -25,13 +25,13 @@ spring:
 
         # event-service
         - id: event-service
-          uri: http://localhost:8080
+          uri: http://localhost:8082
           predicates:
             - Path=/api/events/**,/api/venues/**,/api/event-occurrences/**,/api/ticket-types/**
 
         # inventory-service
         - id: inventory-service
-          uri: http://localhost:8082
+          uri: http://localhost:8087
           predicates:
             - Path=/api/inventory/**
 

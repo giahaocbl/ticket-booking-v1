@@ -1,7 +1,7 @@
 package com.haro.payment.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import com.haro.payment.entity.OutboxEvent;
 import com.haro.payment.repository.OutboxEventRepository;
@@ -25,7 +25,7 @@ public class OutboxService {
         String json;
         try {
             json = objectMapper.writeValueAsString(payload);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new IllegalStateException("Failed to serialize outbox event", e);
         }
 

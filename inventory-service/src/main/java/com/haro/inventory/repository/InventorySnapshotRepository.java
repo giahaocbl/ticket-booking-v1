@@ -10,9 +10,9 @@ import java.util.UUID;
 public interface InventorySnapshotRepository extends JpaRepository<InventorySnapshot, UUID> {
     @Query("""
     SELECT i
-    FROM inventory_snapshot i
-    WHERE event_occurrence_uuid = :eventOccurrenceId
-    AND ticket_type_id = :ticketTypeId
+    FROM InventorySnapshot i
+    WHERE i.eventOccurrenceId = :eventOccurrenceId
+    AND i.ticketTypeId = :ticketTypeId
     """)
     Optional<InventorySnapshot> getAvailability(UUID eventOccurrenceId, UUID ticketTypeId);
 
