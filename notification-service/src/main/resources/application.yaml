@@ -1,9 +1,9 @@
 spring:
   application:
     name: notification-service
-
   profiles:
-    active: prod
+    group:
+      local: dev
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
@@ -39,14 +39,31 @@ spring:
 server:
   port: 8085
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 aws:
   ses:
     region: ap-southeast-2
     from-address: giahaocbl@gmail.com
 
 app:
-  verification-base-url: http://localhost:8082/verify-email
-  password-reset-base-url: http://localhost:8082/reset-password
+  verification-base-url: http://localhost:8086/api/auth/verify-email
+  password-reset-base-url: http://localhost:3000/reset-password
 
 logging:
   level:

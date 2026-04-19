@@ -32,6 +32,23 @@ server:
 outbox:
   poll-interval-ms: 5000
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 logging:
   level:
     com.ticketbooking: DEBUG

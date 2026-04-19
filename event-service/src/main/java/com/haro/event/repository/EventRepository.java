@@ -1,6 +1,8 @@
 package com.haro.event.repository;
 
 import com.haro.event.entity.Event;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,5 +35,6 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
             AND (:status IS NULL OR e.status = :status)
             AND (:category IS NULL OR e.category = :category)
             """)
-    List<Event> findByFilters(UUID organizerId, String status, String category);
+    Page<Event> findByFilters(@Param("organizerId")UUID organizerId, @Param("status")String status, @Param("category")String category, Pageable pageable);
+
 }

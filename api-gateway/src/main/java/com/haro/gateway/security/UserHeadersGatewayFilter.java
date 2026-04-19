@@ -1,6 +1,7 @@
 package com.haro.gateway.security;
 
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -21,7 +22,7 @@ public class UserHeadersGatewayFilter implements GlobalFilter, Ordered {
     public static final String HDR_USER_ROLES = "X-User-Roles";
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    public Mono<Void> filter(ServerWebExchange exchange, @NonNull GatewayFilterChain chain) {
         ServerHttpRequest sanitized = exchange.getRequest().mutate()
                 // Prevent header spoofing from clients
                 .headers(h -> {
@@ -33,7 +34,6 @@ public class UserHeadersGatewayFilter implements GlobalFilter, Ordered {
 
         return exchange.getPrincipal()
                 .cast(Authentication.class)
-                .defaultIfEmpty(null)
                 .flatMap(auth -> {
                     if (!(auth instanceof JwtAuthenticationToken jwtAuth) || !jwtAuth.isAuthenticated()) {
                         return chain.filter(exchange.mutate().request(sanitized).build());
@@ -51,7 +51,8 @@ public class UserHeadersGatewayFilter implements GlobalFilter, Ordered {
                             .build();
 
                     return chain.filter(exchange.mutate().request(enriched).build());
-                });
+                })
+                .switchIfEmpty(Mono.defer(() -> chain.filter(exchange.mutate().request(sanitized).build())));
     }
 
     @Override

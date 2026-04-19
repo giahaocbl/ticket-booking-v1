@@ -37,6 +37,7 @@ public class Reservation {
     private int quantity;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @Builder.Default
     private ReservationStatus status = ReservationStatus.CONFIRMED;
 

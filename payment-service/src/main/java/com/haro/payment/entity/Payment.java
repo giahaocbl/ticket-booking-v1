@@ -2,6 +2,7 @@ package com.haro.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -32,6 +33,7 @@ public class Payment {
     private BigDecimal amount;
 
     @Column(nullable = false, length = 3)
+    @JdbcTypeCode(java.sql.Types.CHAR)
     private String currency;
 
     @Enumerated(EnumType.STRING)

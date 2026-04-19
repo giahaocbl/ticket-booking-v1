@@ -5,11 +5,12 @@ import com.haro.event.dto.EventDto;
 import com.haro.event.service.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -40,20 +41,12 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EventDto>> getEvents(
+    public ResponseEntity<Page<EventDto>> getEvents(
             @RequestParam(required = false) UUID organizerId,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) String category) {
-        List<EventDto> events = eventService.searchEvents(organizerId, status, category);
-//        if (organizerId != null) {
-//            events = eventService.getEventsByOrganizer(organizerId);
-//        } else if (status != null) {
-//            events = eventService.getEventsByStatus(status);
-//        } else if (category != null) {
-//            events = eventService.getEventsByCategory(category);
-//        } else {
-//            events = eventService.getAllEvents();
-//        }
+            @RequestParam(required = false) String category,
+            Pageable pageable) {
+        Page<EventDto> events = eventService.searchEvents(organizerId, status, category, pageable);
         return ResponseEntity.ok(events);
     }
 

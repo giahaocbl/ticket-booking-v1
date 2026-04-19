@@ -2,6 +2,7 @@ package com.haro.order.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -42,6 +43,7 @@ public class Order {
     @Column(name = "reservation_id")
     private UUID reservationId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
     private Status status;
 
@@ -49,6 +51,7 @@ public class Order {
     private BigDecimal totalAmount;
 
     @Column(name = "currency", nullable = false, length = 3)
+    @JdbcTypeCode(java.sql.Types.CHAR)
     private String currency;
 
     @Column(name = "idempotency_key", unique = true, length = 255)

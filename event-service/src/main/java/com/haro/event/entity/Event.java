@@ -50,6 +50,7 @@ public class Event {
 
     @Column(nullable = false)
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     private EventStatus status = EventStatus.SCHEDULED;
 
     @Column(name = "sale_starts_at")

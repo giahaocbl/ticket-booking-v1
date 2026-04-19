@@ -1,7 +1,6 @@
 package com.haro.common.web;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,8 +39,8 @@ public class ApiExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiErrorResponse> handleDataIntegrity(DataIntegrityViolationException ex, HttpServletRequest request) {
+    @ExceptionHandler(DataConfictException.class)
+    public ResponseEntity<ApiErrorResponse> handleDataIntegrity(DataConfictException ex, HttpServletRequest request) {
         return buildError(HttpStatus.CONFLICT, "Request conflicts with existing data", request);
     }
 

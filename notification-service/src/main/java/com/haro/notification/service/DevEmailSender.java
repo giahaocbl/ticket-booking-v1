@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-@Profile("dev")
+@Profile("local")
 public class DevEmailSender implements EmailSender {
 
     private static final Logger log = LoggerFactory.getLogger(DevEmailSender.class);

@@ -10,6 +10,10 @@ import com.haro.event.dto.TicketTypeDto;
 import com.haro.event.repository.EventRepository;
 import com.haro.event.repository.VenueRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -183,10 +187,25 @@ public class EventService {
         return builder.build();
     }
 
-    public List<EventDto> searchEvents(UUID organizerId, String status, String category) {
-        return eventRepository.findByFilters(organizerId, status, category)
-                .stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+    public Page<EventDto> searchEvents(UUID organizerId, String status, String category, Pageable pageable) {
+        Pageable effectivePageable = clampPageable(pageable);
+        return eventRepository.findByFilters(organizerId, status, category, effectivePageable)
+                .map(this::mapToDto);
+    }
+
+    private Pageable clampPageable(Pageable pageable) {
+        int maxPageSize = 200;
+        int size = Math.min(pageable.getPageSize(), maxPageSize);
+
+        Sort sort = pageable.getSort();
+        if (sort.isUnsorted()) {
+            sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        }
+
+        if (size == pageable.getPageSize() && sort.equals(pageable.getSort())) {
+            return pageable;
+        }
+
+        return PageRequest.of(pageable.getPageNumber(), size, sort);
     }
 }
