@@ -31,6 +31,13 @@ spring:
           time_zone: UTC
 
 
+waiting-room:
+  enabled: true
+  default-capacity: 100
+  admission-pass-ttl: 2m
+  waiting-token-ttl: 1h
+  admission-interval-ms: 1000
+
 management:
   endpoints:
     web:
